@@ -2,7 +2,7 @@
 import prisma from "@/lib/prisma";
 export default async function handler(req, res) {
   const alluser = await prisma.user.findFirst({
-    where: { name: "joshua" },
+    where: { name: "joshuaa" },
   });
 
   res.status(200).json(alluser);
