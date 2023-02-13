@@ -3,8 +3,36 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 const inter = Inter({ subsets: ["latin"] });
+import { signIn, signOut } from "next-auth/react";
+import react from "react";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import React from "react";
+import { useRouter } from "next/router";
 
-export default function Home() {
+function Home({ user }) {
+  const router = useRouter();
+  const [email, setEmail] = react.useState("");
+  const [password, setPassword] = react.useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+    console.log(result);
+    if (result.status === 200) router.replace(router.asPath);
+  };
+
+  if (user) {
+    return (
+      <>
+        <button onClick={signOut}>Logout</button>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -14,7 +42,23 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div>Hello world</div>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
@@ -120,3 +164,15 @@ export default function Home() {
     </>
   );
 }
+
+export async function getServerSideProps({ req, res }) {
+  const session = await getServerSession(req, res, authOptions);
+  const user = session?.user || null;
+  return {
+    props: {
+      user,
+    },
+  };
+}
+
+export default Home;

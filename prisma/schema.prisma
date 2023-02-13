@@ -1,6 +1,6 @@
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -9,14 +9,24 @@ generator client {
 }
 
 enum Role {
-  User
+  TEACHER
   ADMIN
 }
 
 model User {
-  id              String @id @default(uuid())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  name            String    @db.VarChar(255)
-  role            Role    
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username  String   @db.VarChar(255)
+  password  String
+  email     String   @unique
+  role      Role     @default(TEACHER)
+  profile   Profile?
+}
+
+model Profile {
+  id        String @id @default(uuid())
+  user      User   @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profileId String @unique
+  address   String
 }
