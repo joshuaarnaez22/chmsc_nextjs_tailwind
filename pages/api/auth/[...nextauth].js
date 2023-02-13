@@ -21,7 +21,7 @@ export const authOptions = {
             where: { email },
             include: { profile: true },
           });
-
+          console.log(user);
           const comparePassword = bcrypt.compareSync(password, user.password);
 
           if (!comparePassword) return null;
