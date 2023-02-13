@@ -41,6 +41,9 @@ export const authOptions = {
       session.user = token.user;
       return session;
     },
+    redirect: async ({ url, baseUrl }) => {
+      // NOTHING OF CODE
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
