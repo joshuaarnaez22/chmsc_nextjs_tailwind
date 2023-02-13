@@ -14,21 +14,30 @@ export const authOptions = {
 
       async authorize(credentials, req) {
         const { email, password } = credentials;
-
+        const user = {
+          id: 1,
+          role: "TEACHER",
+          email: "josh@email.com",
+        };
         try {
-          const getUser = await prisma.user.findFirst({
-            where: { email: "josh@email.com" },
-            include: { profile: true },
-          });
-          if (getUser) {
-            const user = {
-              id: 1,
-              email,
-            };
+          if (email && password) {
             return user;
           } else {
             return null;
           }
+          // const getUser = await prisma.user.findFirst({
+          //   where: { email: "josh@email.com" },
+          //   include: { profile: true },
+          // });
+          // if (getUser) {
+          //   const user = {
+          //     id: 1,
+          //     email,
+          //   };
+          //   return user;
+          // } else {
+          //   return null;
+          // }
           // const comparePassword = bcrypt.compareSync(password, user.password);
 
           // if (!comparePassword) return null;

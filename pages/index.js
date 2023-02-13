@@ -10,7 +10,8 @@ import { getServerSession } from "next-auth/next";
 import React from "react";
 import { useRouter } from "next/router";
 
-function Home({ user }) {
+function Home() {
+  // { user }
   const router = useRouter();
   const [email, setEmail] = react.useState("");
   const [password, setPassword] = react.useState("");
@@ -25,13 +26,13 @@ function Home({ user }) {
     if (result.status === 200) router.replace(router.asPath);
   };
 
-  if (user) {
-    return (
-      <>
-        <button onClick={signOut}>Logout</button>
-      </>
-    );
-  }
+  // if (user) {
+  //   return (
+  //     <>
+  //       <button onClick={signOut}>Logout</button>
+  //     </>
+  //   );
+  // }
 
   return (
     <>
@@ -165,14 +166,14 @@ function Home({ user }) {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  const session = await getServerSession(req, res, authOptions);
-  const user = session?.user || null;
-  return {
-    props: {
-      user,
-    },
-  };
-}
+// export async function getServerSideProps({ req, res }) {
+//   const session = await getServerSession(req, res, authOptions);
+//   const user = session?.user || null;
+//   return {
+//     props: {
+//       user,
+//     },
+//   };
+// }
 
 export default Home;
