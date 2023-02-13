@@ -28,7 +28,7 @@ function Home({ user }) {
   if (user) {
     return (
       <>
-        <button onClick={signOut()}>Logout</button>
+        <button onClick={() => signOut()}>Logout</button>
       </>
     );
   }
@@ -167,7 +167,15 @@ function Home({ user }) {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  const user = session?.user || null;
+  console.log(session);
+  const user = session?.user;
+  if (!session) {
+    return {
+      props: {
+        user: null,
+      },
+    };
+  }
   return {
     props: {
       user,
