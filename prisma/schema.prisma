@@ -1,6 +1,6 @@
 datasource db {
   provider     = "mysql"
-  url          = "mysql://igo9sesubpljka7bisqy:pscale_pw_PBCoKr8AM7wyWYNS66wrPsxjGhCM8zEBwP9pXz1Y28d@ap-southeast.connect.psdb.cloud/clearance_db?sslaccept=strict"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
