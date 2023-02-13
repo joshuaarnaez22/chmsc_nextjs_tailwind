@@ -21,6 +21,7 @@ function Home({ user }) {
       password,
       redirect: false,
     });
+    console.log(result);
     if (result.status === 200) router.replace(router.asPath);
   };
 
