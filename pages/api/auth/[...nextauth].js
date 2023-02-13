@@ -17,7 +17,7 @@ export const authOptions = {
 
         try {
           const user = await prisma.user.findFirst({
-            where: { email },
+            where: { email: "josh@email.com" },
             include: { profile: true },
           });
           const comparePassword = bcrypt.compareSync(password, user.password);
@@ -40,9 +40,6 @@ export const authOptions = {
     async session({ session, token }) {
       session.user = token.user;
       return session;
-    },
-    redirect: async ({ url, baseUrl }) => {
-      // NOTHING OF CODE
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
