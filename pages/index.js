@@ -28,7 +28,7 @@ function Home({ user }) {
   if (user) {
     return (
       <>
-        <button onClick={signOut}>Logout</button>
+        <button onClick={signOut()}>Logout</button>
       </>
     );
   }

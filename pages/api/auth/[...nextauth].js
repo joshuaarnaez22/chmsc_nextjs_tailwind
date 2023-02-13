@@ -14,36 +14,17 @@ export const authOptions = {
 
       async authorize(credentials, req) {
         const { email, password } = credentials;
-        const user = {
-          id: 1,
-          role: "TEACHER",
-          email: "josh@email.com",
-        };
         try {
-          if (email && password) {
-            return user;
-          } else {
-            return null;
-          }
-          // const getUser = await prisma.user.findFirst({
-          //   where: { email: "josh@email.com" },
-          //   include: { profile: true },
-          // });
-          // if (getUser) {
-          //   const user = {
-          //     id: 1,
-          //     email,
-          //   };
-          //   return user;
-          // } else {
-          //   return null;
-          // }
-          // const comparePassword = bcrypt.compareSync(password, user.password);
+          const user = await prisma.user.findFirst({
+            where: { email: "josh@email.com" },
+            include: { profile: true },
+          });
+          const comparePassword = bcrypt.compareSync(password, user.password);
 
-          // if (!comparePassword) return null;
+          if (!comparePassword) return null;
 
-          // delete user["password"];
-          // return user;
+          delete user["password"];
+          return user;
         } catch (error) {
           throw new Error(error.message);
         }
@@ -51,18 +32,21 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // async jwt({ token, user }) {
-    //   if (user) token.user = user;
-    //   return token;
-    // },
-    // async session({ session, token }) {
-    //   session.user = token.user;
-    //   return session;
-    // },
+    async jwt({ token, user }) {
+      if (user) token.user = user;
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user;
+      return session;
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: Number(process.env.SESSION_TIME),
+  },
+  jwt: {
     maxAge: Number(process.env.SESSION_TIME),
   },
   pages: {
