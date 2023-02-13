@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
