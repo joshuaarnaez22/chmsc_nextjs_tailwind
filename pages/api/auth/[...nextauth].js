@@ -19,7 +19,7 @@ export const authOptions = {
         try {
           const user = await prisma.user.findFirst({
             where: { email },
-            include: { profile: true },
+            // include: { profile: true },
           });
           console.log(user);
           const comparePassword = bcrypt.compareSync(password, user.password);
