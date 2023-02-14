@@ -22,7 +22,7 @@ function Home({ user }) {
       redirect: false,
     });
     console.log(result);
-    // if (result.status === 200) router.replace(router.asPath);
+    if (result.status === 200) router.replace(router.asPath);
   };
 
   if (user) {
