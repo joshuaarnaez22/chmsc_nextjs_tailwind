@@ -16,11 +16,14 @@ export const authOptions = {
         const { email, password } = credentials;
         try {
           const user = await prisma.user.findFirst({
-            where: { email: "josh@email.com" },
+            where: { email },
             include: { profile: true },
           });
-          const comparePassword = bcrypt.compareSync(password, user.password);
+          // If user does not exist,
+          if (!user) return null;
 
+          // If user exist compare provided password and hashpassword
+          const comparePassword = bcrypt.compareSync(password, user.password);
           if (!comparePassword) return null;
 
           delete user["password"];

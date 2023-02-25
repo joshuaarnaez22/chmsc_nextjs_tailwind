@@ -7,7 +7,6 @@ import { signIn, signOut } from "next-auth/react";
 import react from "react";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import React from "react";
 import { useRouter } from "next/router";
 
 function Home({ user }) {
@@ -167,7 +166,6 @@ function Home({ user }) {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  console.log(session);
   const user = session?.user;
   if (!session) {
     return {
