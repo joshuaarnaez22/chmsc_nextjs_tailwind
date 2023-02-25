@@ -17,4 +17,4 @@ const TextField = ({ label, name }) => {
   );
 };
 
-export default TextField;
+export default React.memo(TextField);
