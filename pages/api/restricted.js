@@ -3,8 +3,8 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
-  //   const token = await getToken({ req });
-
+  const token = await getToken({ req });
+  console.log(token);
   if (session) {
     res.send({
       content: "You are authenticated",

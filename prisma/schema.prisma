@@ -31,4 +31,6 @@ model Profile {
   profileId    String  @unique
   address      String
   mobileNumber String?
+
+  @@index([profileId])
 }
