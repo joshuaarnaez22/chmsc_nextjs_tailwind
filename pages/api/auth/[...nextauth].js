@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
@@ -15,15 +14,16 @@ export const authOptions = {
 
       async authorize(credentials, req) {
         const { email, password } = credentials;
-
         try {
           const user = await prisma.user.findFirst({
             where: { email },
             include: { profile: true },
           });
-          console.log(user);
-          const comparePassword = bcrypt.compareSync(password, user.password);
+          // If user does not exist,
+          if (!user) return null;
 
+          // If user exist compare provided password and hashpassword
+          const comparePassword = bcrypt.compareSync(password, user.password);
           if (!comparePassword) return null;
 
           delete user["password"];
@@ -47,7 +47,10 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: Number(process.env.SESSION_TIME),
+    maxAge: 60 * 60,
+  },
+  jwt: {
+    maxAge: 60 * 60,
   },
   pages: {
     signIn: "/",

@@ -7,7 +7,6 @@ import { signIn, signOut } from "next-auth/react";
 import react from "react";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import React from "react";
 import { useRouter } from "next/router";
 
 function Home({ user }) {
@@ -28,7 +27,7 @@ function Home({ user }) {
   if (user) {
     return (
       <>
-        <button onClick={signOut}>Logout</button>
+        <button onClick={() => signOut()}>Logout</button>
       </>
     );
   }
@@ -167,7 +166,14 @@ function Home({ user }) {
 
 export async function getServerSideProps({ req, res }) {
   const session = await getServerSession(req, res, authOptions);
-  const user = session?.user || null;
+  const user = session?.user;
+  if (!session) {
+    return {
+      props: {
+        user: null,
+      },
+    };
+  }
   return {
     props: {
       user,

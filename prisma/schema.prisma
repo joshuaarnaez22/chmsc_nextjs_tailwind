@@ -11,6 +11,7 @@ generator client {
 enum Role {
   TEACHER
   ADMIN
+  OFFICER
 }
 
 model User {
@@ -25,8 +26,11 @@ model User {
 }
 
 model Profile {
-  id        String @id @default(uuid())
-  user      User   @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  profileId String @unique
-  address   String
+  id           String  @id @default(uuid())
+  user         User    @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  profileId    String  @unique
+  address      String
+  mobileNumber String?
+
+  @@index([profileId])
 }
